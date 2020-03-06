@@ -1,5 +1,6 @@
 <?php
-$connection = mysqli_connect("localhost", "root", "aspire@123", "Data");
+
+$connection = mysql::mysqlConnect();
 $query = "select *from area_of_intrest";
 $row = mysqli_query($connection, $query);
 if(mysqli_num_rows($row) > 0) {
@@ -13,7 +14,7 @@ if(mysqli_num_rows($row) > 0) {
     }
      echo "</select></html>";
 }
-mysqli_close($connection);
+mysql::mysqlClose($connection);
 ?>
 
 

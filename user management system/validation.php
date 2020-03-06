@@ -1,5 +1,6 @@
-<?php
 
+<?php
+include("mysqlConnect.php");
 class validate {
     public $details;
     public $error;
@@ -9,13 +10,13 @@ class validate {
     }
     public function validation() {
         if (isset($this->details['submit'])) {
-            if (!empty($this->details['firstName']) and preg_match("/^[a-zA-Z ]*$/", $this->details['firstName']) and strlen($this->details['firstName'])>3  and strlen($this->details['firstName'])<10 and ctype_alpha($this->details['firstName'])) {
+            if (!empty($this->details['firstName']) and preg_match("/^[a-zA-Z ]*$/", $this->details['firstName']) and strlen($this->details['firstName'])>3  and strlen($this->details['firstName'])<20 and ctype_alpha($this->details['firstName'])) {
                 $this->correctDetails['firstName'] = $this->details['firstName'];
             } else {
                 $this->error["firstError"] = " *Enter Valid First Name";
             } 
             
-            if (!empty($this->details['lastName']) and preg_match("/^[a-zA-Z ]*$/", $this->details['lastName']) and strlen($this->details['lastName'])>3  and strlen($this->details['lastName'])<10 and ctype_alpha($this->details['lastName'])) {
+            if (!empty($this->details['lastName']) and preg_match("/^[a-zA-Z ]*$/", $this->details['lastName']) and strlen($this->details['lastName'])<10 and ctype_alpha($this->details['lastName'])) {
                 $this->correctDetails['lastName'] = $this->details['lastName'];
             } else {
                 $this->error["lastError"] = " *Enter Valid Last Name";
@@ -67,8 +68,17 @@ class validate {
                     $this->error['mobileError']  = "*Enter Valid Mobile Number";
                 }  
             }
+            if (!empty($this->details['password']) and preg_match("/^(?=[^\d]*\d)(?=[A-Z\d ]*[^A-Z\d ]).{8,}$/", $this->details['password'])) {
+                $this->correctDetails['password'] = $this->details['password'];
+            } else {
+                $this->error['passwordError']  = "*Password must be a minimum of 8 characters and contain at least one capital letter, a number and a special character and one small letter.";
+            }
+          
+            if($this->details['password'] != $this->details['cpassword']) {
+                $this->error['cpasswordError'] = "*Enter Correct Password";
+            }
 
-            if($this->error["firstError"] == "" and $this->error["lastError"] == "" and $this->error['areaOfIntrestError'] == "" and $this->error['dateError'] == "" and $this->error['detailsOfGraduationError'] == "" and $this->error['bloodGroupError'] == "" and $this->error['genderError'] == ""  and $this->error["emailError"] == ""  and $this->error['mobileError'] == "") {
+            if($this->error["firstError"] == "" and $this->error["lastError"] == "" and $this->error['areaOfIntrestError'] == "" and $this->error['dateError'] == "" and $this->error['detailsOfGraduationError'] == "" and $this->error['bloodGroupError'] == "" and $this->error['genderError'] == ""  and $this->error["emailError"] == ""  and $this->error['mobileError'] == "" and $this->error['passwordError'] == "" and $this->error['cpasswordError'] == "") {
                 print_r($this->correctDetails);
                 $this->display();
             }
@@ -87,7 +97,7 @@ class validate {
         $gender = $this->correctDetails['gender']; 
         $password = $this->details['password'];
 
-        $connection = mysqli_connect("localhost", "root", "aspire@123", "Data");
+    $connection = mysql::mysqlConnect();
         $insertQuery = "insert into detail (first_name, last_name, date_of_birth, details_of_graduation, blood_group, gender, profile_picture, password) values('$firstName','$lastName','$date', '$detailsOfGraduation','$bloodGroup','$gender','1','$password')";
         if(mysqli_query($connection, $insertQuery)) {
              echo "inserted";
@@ -112,10 +122,11 @@ class validate {
                  mysqli_query($connection, $areaOfIntrestQuery);
              }
         }
-        mysqli_close($connection);
+    mysql::mysqlClose($connection);
     }
 }
 
 $obj = new validate($_POST);
 $error = $obj->validation();
+?>
 

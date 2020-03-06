@@ -1,4 +1,5 @@
 <?php
+include("mysqlConnect.php");
 $id = $_GET['id'];
 $connection = mysqli_connect("localhost", "root", "aspire@123", "Data");
 $query = "select *from detail";

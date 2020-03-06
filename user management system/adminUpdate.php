@@ -1,9 +1,10 @@
 <?php
+include("mysqlConnect.php");
 $id = $_GET['id'];
 $email = [];
 $mobile = [];
 $areaOfIntrest3 = [];
-$connection = mysqli_connect("localhost", "root", "aspire@123", "Data");
+$connection = mysql::mysqlConnect();
 $query = "select * from detail where id='$id'";
 $queryArea = "select * from area_of_intrest1 where user_id='$id'";
 $queryEmail = "select * from email where user_id='$id'";
@@ -44,7 +45,7 @@ if(mysqli_num_rows($row3)) {
 }
 $mobile1 = implode(',',$mobile);
 
-mysqli_close($connection);
+mysql::mysqlClose($connection);
 ?>
 
 <html>  
@@ -88,33 +89,13 @@ Password : <input type="password" name="password" value="<?php echo $password; ?
  
 
  $(document).ready(function(){  
-      var i=1;   
-           $('#addEmail').click(function(){  
-           i++;  
-           $('#email').append('<tr id="rowEmail'+i+'"><td><input type="text" id="email" name="email[]" placeholder="Enter your Name" class="form-control name_list" /></td><td><button type="button" name="removeEmail" id="'+i+'" class="btn btn-danger removeEmail">X</button></td></tr>');  
-      });  
-      $(document).on('click', '.removeEmail', function(){  
-           var button_id = $(this).attr("id");   
-           $('#rowEmail'+button_id+'').remove();  
-      });  
        
- });  
 
 ///////////////////////////////////////////////////////////////
 
 
  $(document).ready(function(){  
-      var i=1;   
-           $('#addMobile').click(function(){  
-           i++;  
-           $('#mobileNo').append('<tr id="rowMobile'+i+'"><td><input type="text" name="mobileNo[]" placeholder="Enter your Name" class="form-control name_list" /></td><td><button type="button" name="removeMobile" id="'+i+'" class="btn btn-danger removeMobile">X</button></td></tr>');  
-      });  
-      $(document).on('click', '.removeMobile', function(){  
-           var button_id = $(this).attr("id");   
-           $('#rowMobile'+button_id+'').remove();  
-      });  
-
-
+     
      $('#email').tokenfield({
   autocomplete:{
    source: ['hanu@gmail.com','siva@gmail.com','suba@gmail.com','inbha@gmail.com','ajith@gmail.com'],

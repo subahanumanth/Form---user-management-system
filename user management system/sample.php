@@ -1,4 +1,5 @@
 <?php
+include("mysqlConnect.php");
 $id = 41;
 $connection = mysqli_connect("localhost", "root", "aspire@123", "Data");
     $insert = "select *from detail where id='$id'";

@@ -1,4 +1,5 @@
 <?php
+
 $connection = mysqli_connect("localhost", "root", "aspire@123", "Data");
 $query = "select *from blood_group";
 $row = mysqli_query($connection, $query);

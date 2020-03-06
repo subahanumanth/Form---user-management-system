@@ -1,25 +1,43 @@
+
 <?php
+include("mysqlConnect.php");
+
+$rights=5;
+if(isset($_POST['submit'])){
+$name = $_POST['name'];
+$password = $_POST['password'];
+
+include("session.php"); 
+ 
  $connection = mysqli_connect("localhost", "root", "aspire@123", "Data");
- $query = "select *from detail";
+ $query = "select * from detail where first_name='$name' and password='$password'";
  $row = mysqli_query($connection, $query);
- $a=0;
- if(mysqli_num_rows($row)>0) {
-     while($rows = mysqli_fetch_assoc($row)) {
-         if($_POST['name'] == $rows['first_name'] and $_POST['password'] == $rows['password']) {
-              $a = 1;
-              $id = $rows['id'];
-         }
-     }
+ while($rows = mysqli_fetch_assoc($row)) {
+     $rights = $rows['rights'];
+     $id = $rows['id'];
  }
 mysqli_close($connection);
+}
 ?>
+
+<html>
+<h1>Welcome <?php echo $_SESSION['name']; ?></h1>
+<div class="topnav">
+
+  <a href="login.php" id="logout">log out</a>
+  
+</div><br>
+</html>
+
 <?php
-if($a==1) {
+if($rights == 1) {
+    header("Location:adminList.php?id=$id");
+} elseif($rights == 0) {
     $connection = mysqli_connect("localhost", "root", "aspire@123", "Data");
     $insert = "select *from detail where id='$id'";
     $row = mysqli_query($connection, $insert);
     if(mysqli_num_rows($row) > 0) {
-        echo "<html><table border='1'  style='border-collapse: collapse;'>";
+        echo "<html><table border='1'  style='border-collapse: collapse;  width:100%;' id='customers'>";
         while($rows = mysqli_fetch_assoc($row)) {
         $id = $rows['id'];
         ?>
@@ -60,15 +78,68 @@ if($a==1) {
             $y2= implode(",",$q2);
         ?>
             <td><?php echo $y2 ?></td>
-            <td><a href="adminDelete.php?id=<?php echo $id ?>">Delete</a></td>
             <td><a href="adminUpdate.php?id=<?php echo $id ?>">Update</a></td></tr>
             <?php
         }
         echo "</table></html>";
 
+}
 } else {
-    echo "user name not exist";
+    echo "user not exist";
 }
-}
-mysqli_close($connection);
 ?>
+
+<html>
+<style>
+#logout {
+  margin-left : 1200px;
+}
+
+#submit {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  margin-left: 423px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  margin-left: 423px;
+}
+
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+
+
+</html>

@@ -1,7 +1,7 @@
 <?php
-
+include("mysqlConnect.php");
 $id = $_GET['id'];
-$connection = mysqli_connect("localhost", "root", "aspire@123", "Data");
+$connection = mysql::mysqlConnect();
 $queryEmail = "delete from email where user_id='$id'";
 $queryMobile = "delete from mobile where user_id='$id'";
 $queryArea = "delete from area_of_intrest1 where user_id='$id'";
@@ -10,16 +10,16 @@ mysqli_query($connection, $queryEmail);
 mysqli_query($connection, $queryMobile);
 mysqli_query($connection, $queryArea);
 mysqli_query($connection, $queryDetail);
-mysqli_close($connection);
+mysql::mysqlClose($connection);
 ?>
 
 <?php
 
-$connection = mysqli_connect("localhost", "root", "aspire@123", "Data");
+$connection = mysql::mysqlConnect();
 $insert = "select *from detail";
 $row = mysqli_query($connection, $insert);
 if(mysqli_num_rows($row) > 0) {
-    echo "<html><table border='1'  style='border-collapse: collapse;'>";
+    echo "<html><table border='1'  style='border-collapse: collapse; width:100%;' id='customers'>";
     while($rows = mysqli_fetch_assoc($row)) {
     $id = $rows['id'];
     ?>
@@ -67,5 +67,34 @@ if(mysqli_num_rows($row) > 0) {
         echo "</table></html>";
         
 }
-mysqli_close($connection);
+mysql::mysqlClose($connection);
 ?>
+
+<html>
+<style>
+
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+</style>
+</html>

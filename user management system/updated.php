@@ -1,5 +1,5 @@
 <?php
-
+include("mysqlConnect.php");
 $id = $_POST['button'];
 $fname = $_POST['firstName'];
 $lname = $_POST['lastName'];
