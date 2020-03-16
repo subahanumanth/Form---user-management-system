@@ -1,0 +1,55 @@
+<html>
+<body><style>
+
+</style>
+<form name="empform" onsubmit="display();">
+Employee name:
+<input type="text" name="nam" ><br><br>
+employee ID:
+<input type="text" name="idno" ><br><br>
+Phone number:
+<input type="text" name="phone" ><br><br>
+Gender:
+<input type="text" name="gender" ><br><br>
+Address:
+<input type="text" name="address" ><br><br>
+<input type="submit">
+</form>
+<script>
+
+function display(){
+   var empname=document.forms["empform"]["nam"].value;
+   var idno=document.forms["empform"]["idno"].value;
+   var phone=document.forms["empform"]["phone"].value;
+  var gender=document.forms["empform"]["gender"].value;
+  var address=document.forms["empform"]["address"].value;
+   var x=/^[a-zA-Z]+$/;
+   var y=/^[0-9]+$/;
+if(empname.length>15){
+   document.write("employee name should be less than 15 characters");
+}
+else if(idno.length>10){
+document.write("idno should be less than 10");
+}
+else if(phone.length>11){
+document.write("phone number should be less than 11");
+}
+else if(phone.match(x)){
+document.write("phone number must include only number");
+}
+else if(empname.match(y)){
+document.write("employee name must include only character");
+}
+
+else{
+  
+   document.write("Employee name : "+empname+"<br><br>");
+   document.write("Idno : "+idno+"<br><br>");
+   document.write("Phone : "+phone+"<br><br>");
+   document.write("Gender : "+gender+"<br><br>");
+   document.write("Address : "+address+"<br><br>");
+}
+}
+</script>
+</body>
+</html>
